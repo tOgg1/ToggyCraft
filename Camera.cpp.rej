@@ -1,0 +1,17 @@
+***************
+*** 1,7 ****
+  #include "Camera.h"
+  #include "GLRenderer.h"
+  #include <algorithm>
+- #include <glm\gtc\matrix_transform.hpp>
+  #include <GL/glfw3.h>
+  
+  float Camera::maxViewY = 3.14f/2;
+--- 1,7 ----
+  #include "Camera.h"
+  #include "GLRenderer.h"
+  #include <algorithm>
++ #include <glm/gtc/matrix_transform.hpp>
+  #include <GL/glfw3.h>
+  
+  float Camera::maxViewY = 3.14f/2;

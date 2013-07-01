@@ -1,0 +1,15 @@
+***************
+*** 1,6 ****
+  #pragma once
+  
+- #include <glm\glm.hpp>
+  
+  enum BlockType
+  {
+--- 1,6 ----
+  #pragma once
+  
++ #include <glm/glm.hpp>
+  
+  enum BlockType
+  {

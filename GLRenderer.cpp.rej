@@ -1,0 +1,13 @@
+***************
+*** 1,5 ****
+  #include "GLRenderer.h"
+- #include "shader.h"
+  #include <glm/gtc/matrix_transform.hpp>
+  #include <GL/glfw3.h>
+  
+--- 1,5 ----
+  #include "GLRenderer.h"
++ #include "Shader.h"
+  #include <glm/gtc/matrix_transform.hpp>
+  #include <GL/glfw3.h>
+  

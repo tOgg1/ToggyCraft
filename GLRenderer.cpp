@@ -46,7 +46,7 @@ int GLRenderer::addPointToMesh(int id, glm::vec3 point, glm::vec4 color, glm::ve
 	activeMesh.normals.push_back(normal);
 
 	// return index of point
-	return activeMesh.vertices.size();
+	return activeMesh.vertices.size() - 1;
 }
 
 void GLRenderer::addTriangleToMesh(int id, int id1, int id2, int id3)
@@ -94,7 +94,6 @@ void GLRenderer::finishMesh(int id)
 
 void GLRenderer::renderACube()
 {
-	
 	static const GLfloat g_vertex_buffer_data[] = { 
 		-1.0f, 1.0f, 1.0f,
         -1.0f, -1.0f, 1.0f,

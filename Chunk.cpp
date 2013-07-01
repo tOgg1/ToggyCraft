@@ -162,13 +162,13 @@ void Chunk::createCube(int x, int y, int z, GLRenderer* pRenderer)
 	pRenderer->addTriangleToMesh(meshID, id4, id8, id7);
 	
 	// Bottom face
-	id1 = pRenderer->addPointToMesh(meshID, p1, color, n6);
-	id2 = pRenderer->addPointToMesh(meshID, p2, color, n6);
-	id5 = pRenderer->addPointToMesh(meshID, p5, color, n6);
 	id6 = pRenderer->addPointToMesh(meshID, p6, color, n6);
+	id5 = pRenderer->addPointToMesh(meshID, p5, color, n6);
+	id2 = pRenderer->addPointToMesh(meshID, p2, color, n6);
+	id1 = pRenderer->addPointToMesh(meshID, p1, color, n6);
 
-	pRenderer->addTriangleToMesh(meshID, id1, id2, id5);
-	pRenderer->addTriangleToMesh(meshID, id1, id5, id6);
+	pRenderer->addTriangleToMesh(meshID, id6, id5, id2);
+	pRenderer->addTriangleToMesh(meshID, id6, id2, id1);
 
 }
 

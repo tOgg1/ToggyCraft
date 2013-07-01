@@ -1,0 +1,86 @@
+diff --git a/Block.h b/Block.h
+index bb22e43..37d9402 100644
+--- a/Block.h
++++ b/Block.h
+@@ -1,6 +1,6 @@
+ #pragma once
+ 
+-#include <glm\glm.hpp>
++#include <glm/glm.hpp>
+ 
+ enum BlockType
+ {
+diff --git a/Camera.cpp b/Camera.cpp
+index 0aac763..376210b 100644
+--- a/Camera.cpp
++++ b/Camera.cpp
+@@ -1,7 +1,7 @@
+ #include "Camera.h"
+ #include "GLRenderer.h"
+ #include <algorithm>
+-#include <glm\gtc\matrix_transform.hpp>
++#include <glm/gtc/matrix_transform.hpp>
+ #include <GL/glfw3.h>
+ 
+ float Camera::maxViewY = 3.14f/2;
+diff --git a/Camera.h b/Camera.h
+index 8a175a6..daf79ae 100644
+--- a/Camera.h
++++ b/Camera.h
+@@ -1,6 +1,6 @@
+ #pragma once
+ 
+-#include <glm\glm.hpp>
++#include <glm/glm.hpp>
+ 
+ struct GLFWwindow;
+ 
+diff --git a/GLRenderer.cpp b/GLRenderer.cpp
+index 548537c..cd868b0 100644
+--- a/GLRenderer.cpp
++++ b/GLRenderer.cpp
+@@ -1,5 +1,5 @@
+ #include "GLRenderer.h"
+-#include "shader.h"
++#include "Shader.h"
+ #include <glm/gtc/matrix_transform.hpp>
+ #include <GL/glfw3.h>
+ 
+diff --git a/GLRenderer.h b/GLRenderer.h
+index a59a0b3..8602ac2 100644
+--- a/GLRenderer.h
++++ b/GLRenderer.h
+@@ -1,7 +1,7 @@
+ #pragma once
+ 
+-#include <GL\glew.h>
+-#include <glm\glm.hpp>
++#include <GL/glew.h>
++#include <glm/glm.hpp>
+ 
+ #include "Game.h"
+ #include "Camera.h"
+diff --git a/Shader.cpp b/Shader.cpp
+index 7f6d66f..2f31d70 100644
+--- a/Shader.cpp
++++ b/Shader.cpp
+@@ -11,7 +11,7 @@ using namespace std;
+ 
+ #include <GL/glew.h>
+ 
+-#include "shader.h"
++#include "Shader.h"
+ 
+ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path){
+ 
+diff --git a/Shader.h b/Shader.h
+index 82e148d..c1e0380 100644
+--- a/Shader.h
++++ b/Shader.h
+@@ -1,3 +1,3 @@
+-#include <GL\glew.h>
++#include <GL/glew.h>
+ 
+-GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path);
+\ No newline at end of file
++GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path);
