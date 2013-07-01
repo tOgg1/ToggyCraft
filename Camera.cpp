@@ -1,7 +1,7 @@
 #include "Camera.h"
 #include "GLRenderer.h"
 #include <algorithm>
-#include <glm\gtc\matrix_transform.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include <GL/glfw3.h>
 
 float Camera::maxViewY = 3.14f/2;
@@ -14,7 +14,9 @@ Camera::Camera(GLFWwindow* window)
 	viewX = 3.14f;
 	viewY = 0.0f;
 
-	speed = 5.0f;
+	speed = 3.0f;
+
+	mouseLimiter = 1.0f;
 
 	pos = glm::vec3(0, 0, 10);
 	dir = glm::vec3(
@@ -51,6 +53,7 @@ void Camera::move(float dt)
 	
 	viewX += dt*mouseLimiter*float(Game::screenWidth/2 - xPos);
 	viewY += dt*mouseLimiter*float(Game::screenHeight/2 - yPos);
+
 
 	// clamp viewY
 	viewY = (viewY > maxViewY) ? maxViewY : (viewY < minViewY) ? minViewY : viewY;
@@ -90,7 +93,19 @@ void Camera::move(float dt)
 		pos -= glm::vec3(0,1,0)*dt*speed;
 	}
 
+	if(glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
+	{
+		speed = 10.0f;
+	}
+
+	if(glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
+	{
+		speed = 3.0f;
+	}
+
 	up = glm::cross(right, dir);
 
 	viewMatrix = glm::lookAt(pos, pos + dir, up);
+
+	printf("Pos: %f %f %f dt: %f\r", pos.x, pos.y, pos.z, dt);
 }

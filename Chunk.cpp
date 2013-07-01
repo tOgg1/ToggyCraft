@@ -1,6 +1,5 @@
 #include "Chunk.h"
 
-
 Chunk::Chunk(glm::vec3 pos)
 {
 	meshID = -1;
@@ -17,14 +16,13 @@ Chunk::Chunk(glm::vec3 pos)
 	}
 }
 
-
 Chunk::~Chunk(void)
 {
 	for(int i = 0; i < CHUNK_SIZE; i++)
 	{
 		for(int j = 0; j < CHUNK_SIZE; j++)
 		{
-			delete mBlocks[i][j];
+			delete [] mBlocks[i][j];
 		}
 		delete [] mBlocks[i];
 	}
@@ -105,8 +103,8 @@ void Chunk::createCube(int x, int y, int z, GLRenderer* pRenderer)
 	// Cube Normals (front, back, right, left, top, bottom)
 	n1 = glm::vec3(0.0f, 0.0f, 1.0f);
 	n2 = glm::vec3(0.0f, 0.0f, -1.0f);
-	n3 = glm::vec3(1.0f, 0.0f, 1.0f);
-	n4 = glm::vec3(-1.0f, 0.0f, 1.0f);
+	n3 = glm::vec3(1.0f, 0.0f, 0.0f);
+	n4 = glm::vec3(-1.0f, 0.0f, 0.0f);
 	n5 = glm::vec3(0.0f, 1.0f, 0.0f);
 	n6 = glm::vec3(0.0f, -1.0f, 0.0f);
 
@@ -138,27 +136,27 @@ void Chunk::createCube(int x, int y, int z, GLRenderer* pRenderer)
 
 	// Right face
 	id2 = pRenderer->addPointToMesh(meshID, p2, color, n3);
-	id3 = pRenderer->addPointToMesh(meshID, p3, color, n3);
 	id5 = pRenderer->addPointToMesh(meshID, p5, color, n3);
 	id8 = pRenderer->addPointToMesh(meshID, p8, color, n3);
+	id3 = pRenderer->addPointToMesh(meshID, p3, color, n3);
 
 	pRenderer->addTriangleToMesh(meshID, id2, id5, id8);
 	pRenderer->addTriangleToMesh(meshID, id2, id8, id3);
 	
 	// Left face
+	id6 = pRenderer->addPointToMesh(meshID, p6, color, n4);
 	id1 = pRenderer->addPointToMesh(meshID, p1, color, n4);
 	id4 = pRenderer->addPointToMesh(meshID, p4, color, n4);
-	id6 = pRenderer->addPointToMesh(meshID, p6, color, n4);
 	id7 = pRenderer->addPointToMesh(meshID, p7, color, n4);
 
 	pRenderer->addTriangleToMesh(meshID, id6, id1, id4);
 	pRenderer->addTriangleToMesh(meshID, id6, id4, id7);
 
 	// Top face
-	id3 = pRenderer->addPointToMesh(meshID, p3, color, n5);
 	id4 = pRenderer->addPointToMesh(meshID, p4, color, n5);
-	id7 = pRenderer->addPointToMesh(meshID, p7, color, n5);
+	id3 = pRenderer->addPointToMesh(meshID, p3, color, n5);
 	id8 = pRenderer->addPointToMesh(meshID, p8, color, n5);
+	id7 = pRenderer->addPointToMesh(meshID, p7, color, n5);
 
 	pRenderer->addTriangleToMesh(meshID, id4, id3, id8);
 	pRenderer->addTriangleToMesh(meshID, id4, id8, id7);

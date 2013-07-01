@@ -32,10 +32,11 @@ void ChunkManager::generateChunks()
 	{
 		for(int j = 0; j < Chunk::CHUNK_SIZE; j++)
 		{
-			if(i*i + j*j < Chunk::CHUNK_SIZE*Chunk::CHUNK_SIZE)
+			int x, y; x = Chunk::CHUNK_SIZE/2 - i; y = Chunk::CHUNK_SIZE/2 - j;
+			if(x*x + y*y < Chunk::CHUNK_SIZE)
 			{
-				chunk->activateBlock(i, j, 0, true);
-				chunk->setBlockType(i, j, 0, GRASS);
+				chunk->activateBlock(i, 0, j, true);
+				chunk->setBlockType(i, 0, j, GRASS);
 			}
 		}
 	}

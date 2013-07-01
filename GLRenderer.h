@@ -1,7 +1,7 @@
 #pragma once
 
-#include <GL\glew.h>
-#include <glm\glm.hpp>
+#include <GL/glew.h>
+#include <glm/glm.hpp>
 
 #include "Game.h"
 #include "Camera.h"
@@ -26,19 +26,23 @@ struct MeshBuffer
 	GLuint colorBuffer;
 	GLuint normalBuffer;
 	GLuint indexBuffer;
+	int indexSize;
 	glm::vec3 translation;
 };
 
 class GLRenderer
 {
 public:
-	GLRenderer(Game* game, GLFWwindow* window);
+	GLRenderer(Game* game, GLFWwindow* window, Camera* camera);
 	~GLRenderer(void);
 
 	void startMesh(int* id);
+	void finishMesh(int id);
+
 	int addPointToMesh(int id, glm::vec3 point, glm::vec4 color, glm::vec3 normal);
 	void addTriangleToMesh(int id, int point1, int point2, int point3);
-	void finishMesh(int id);
+	
+	void renderACube();
 	void renderMesh(int id);
 
 	bool cubeInFrustum(glm::mat4, glm::vec3 center, float size_x, float size_y, float size_z);
