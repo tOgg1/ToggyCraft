@@ -3,6 +3,7 @@
 in vec3 position_worldspace;
 in vec3 normal_cameraspace;
 in vec3 eyeDirection_cameraspace;
+in vec4 fragmentColor;
 
 out vec4 color;
 
@@ -12,10 +13,10 @@ void main()
 {
 
 	vec3 lightColor = vec3(1,1,1);
-	float lightPower = 5.0f;
+	float lightPower = 1.0f;
 
-	vec3 materialDiffuseColor = vec3(1,1,1);
-	vec3 materialAmbientColor = vec3(0.5, 0.5, 0.5) * materialDiffuseColor;
+	vec3 materialDiffuseColor = fragmentColor.rgb;
+	vec3 materialAmbientColor = vec3(0.2, 0.2, 0.2) * materialDiffuseColor;
 	vec3 materialSpecularColor = vec3(0.3, 0.3, 0.3);
 
 	vec3 normalDir = normalize(normal_cameraspace);
