@@ -1,3 +1,5 @@
 *.tlog
 *.obj
+*.h.rej
+*.cpp.orig
 Debug/

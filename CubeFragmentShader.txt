@@ -2,6 +2,7 @@
 
 in vec3 position_worldspace;
 in vec3 normal_cameraspace;
+in vec3 vertexNormal_worldspace;
 in vec3 eyeDirection_cameraspace;
 in vec4 fragmentColor;
 
@@ -13,27 +14,29 @@ void main()
 {
 
 	vec3 lightColor = vec3(1,1,1);
-	float lightPower = 3.0f;
+	float lightPower = 1.0f;
 
-	vec3 materialDiffuseColor = fragmentColor.rgb;
-	vec3 materialAmbientColor = vec3(0.3, 0.3, 0.3) * materialDiffuseColor;
-	vec3 materialSpecularColor = vec3(0.1, 0.1, 0.1);
+	//vec3 materialDiffuseColor = fragmentColor.rgb;
+	//vec3 materialAmbientColor = vec3(0.3, 0.3, 0.3) * materialDiffuseColor;
+	//vec3 materialSpecularColor = vec3(0.1, 0.1, 0.1);
 
-	vec3 normalDir = normalize(normal_cameraspace);
-	vec3 lightDir = vec3(1, 2, 1);
+	//vec3 normalDir = normalize(normal_cameraspace);
+	vec3 normalDir_worldspace = normalize(vertexNormal_worldspace);
+	vec3 lightDir = vec3(2, 5, -3);
 
 	lightDir = normalize(lightDir);
 
-	float attenuation = clamp(dot(normalDir, lightDir), 0, 1);
+	float diffuse = 0.3 + clamp(dot(normalDir_worldspace, lightDir), 0, 1);
+	
+	color = fragmentColor * diffuse * lightPower;
 
-	vec3 eyeDir = normalize(eyeDirection_cameraspace);
-	vec3 reflectDir = reflect(-lightDir, normalDir);
+	//vec3 eyeDir = normalize(eyeDirection_cameraspace);
+	//ec3 reflectDir = reflect(-lightDir, normalDir);
 
-	float specAttenuation = clamp(dot(eyeDir, reflectDir), 0, 1);
+	//float specAttenuation = clamp(dot(eyeDir, reflectDir), 0, 1);
 
-	color.rgb = materialAmbientColor + 
-			materialDiffuseColor * attenuation * lightColor * lightPower +
-			materialSpecularColor * lightColor * lightPower * pow(specAttenuation, 5);
+	//color.rgb = materialDiffuseColor * diffuse * lightColor * lightPower +
+	//materialSpecularColor * lightColor * lightPower * pow(specAttenuation, 5);
 
-	color.a = 1.0;
+	//color.a = 1.0;
 }

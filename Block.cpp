@@ -1,6 +1,8 @@
 #include "Block.h"
 
 
+const float Block::BLOCK_SIZE = 0.5f;
+
 Block::Block()
 {
 	mActive = false;

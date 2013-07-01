@@ -17,7 +17,7 @@
 
 Game::Game(void)
 {
-
+	
 }
 
 
@@ -29,11 +29,11 @@ Game::~Game(void)
 void Game::start()
 {
 	initGL();
-	
+
 	camera = new Camera(window);
 	renderer = new GLRenderer(this, window, camera);
 	manager = new ChunkManager(renderer);
-	
+
 	manager->generateChunks();
 
 	this->run();
@@ -79,7 +79,7 @@ void Game::initGL()
 		fprintf(stderr, "Failed to initialize GLFW");
 	}
 
-	this->window = glfwCreateWindow(800, 600, "ToggyCraft", NULL, NULL);
+	this->window = glfwCreateWindow(screenWidth, screenHeight, "ToggyCraft", NULL, NULL);
 	
 	if(!this->window)
 	{

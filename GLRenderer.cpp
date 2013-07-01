@@ -19,7 +19,7 @@ GLRenderer::GLRenderer(Game* game, GLFWwindow* window, Camera* camera)
 	this->colorHandle = glGetAttribLocation(this->programID, "vertexColor");
 	this->normalHandle = glGetAttribLocation(this->programID, "vertexNormal_modelspace");
 
-	FOV = 45;
+	FOV = 75;
 	projectionMatrix = glm::perspective(FOV, float(Game::screenWidth/Game::screenHeight), 0.1f, 100.0f);
 	currentID = -1;
 }
@@ -61,6 +61,8 @@ void GLRenderer::addTriangleToMesh(int id, int id1, int id2, int id3)
 void GLRenderer::finishMesh(int id)
 {
 	GLuint vertexBuffer, colorBuffer, normalBuffer, indexBuffer;
+	int size = activeMesh.vertices.size();
+	int size2 = activeMesh.colors.size();
 
 	glGenVertexArrays(1, &vertexBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);

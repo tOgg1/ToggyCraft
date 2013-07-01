@@ -40,7 +40,7 @@ glm::vec4 Chunk::getCubeColor(int x, int y, int z)
 	case STONE:
 		return glm::vec4(0.7f, 0.7f, 0.7f, 1.0f);
 	case DIRT:
-		return glm::vec4(0.6f, 0.2f, 0.7f, 1.0f);
+		return glm::vec4(0.5f, 0.3f, 0.0f, 1.0f);
 	case GRASS:
 		return glm::vec4(0.0f, 0.7f, 0.0f, 1.0f);
 	case WOOD:

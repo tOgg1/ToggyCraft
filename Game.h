@@ -28,7 +28,7 @@ class Game
 		void start();
 		void run();
 
-		static const int screenWidth = 800, screenHeight = 600;
+		static const int screenWidth = 1040, screenHeight = 585;
 
 	private:
 		void cleanup();

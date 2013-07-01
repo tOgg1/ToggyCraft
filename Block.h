@@ -4,7 +4,7 @@
 
 enum BlockType
 {
-	DEFAULT,
+	DEFAULT = 0,
 	STONE,
 	DIRT,
 	GRASS,
@@ -18,7 +18,7 @@ public:
 	Block(void);
 	~Block(void);
 
-	static const int BLOCK_SIZE = 1;
+	static const float BLOCK_SIZE;
 
 	bool isActive();
 	void setActive(bool active);
