@@ -6,6 +6,7 @@
 
 float Camera::maxViewY = 3.14f/2;
 float Camera::minViewY = -3.14f/2;
+int Camera::fov = 70;
 
 Camera::Camera(GLFWwindow* window)
 {
@@ -32,6 +33,7 @@ Camera::Camera(GLFWwindow* window)
 	up = glm::cross(dir, right);
 
 	viewMatrix = glm::lookAt(pos, pos+dir, right);
+	projectionMatrix = glm::perspective(float(fov), (float)Game::screenWidth/(float)Game::screenHeight, 0.1f, 100.0f);
 }
 
 
@@ -43,6 +45,11 @@ Camera::~Camera(void)
 glm::mat4& Camera::getViewMatrix()
 {
 	return viewMatrix;
+}
+
+glm::mat4& Camera::getProjectionMatrix()
+{
+	return projectionMatrix;
 }
 
 void Camera::move(float dt)

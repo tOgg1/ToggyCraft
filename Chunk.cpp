@@ -67,7 +67,7 @@ void Chunk::render(GLRenderer* pRenderer)
 void Chunk::createMesh(GLRenderer* pRenderer)
 {
 	pRenderer->startMesh(&meshID);
-	pRenderer->setTranslation(mPos);
+	pRenderer->setTranslation(glm::vec3(mPos.x*16, mPos.y*16, mPos.z*16));
 
 	for(int i = 0; i < CHUNK_SIZE; i++)
 	{
@@ -170,6 +170,23 @@ void Chunk::createCube(int x, int y, int z, GLRenderer* pRenderer)
 	pRenderer->addTriangleToMesh(meshID, id6, id5, id2);
 	pRenderer->addTriangleToMesh(meshID, id6, id2, id1);
 
+}
+
+void Chunk::generateTerrain(TerrainGenerator* generator)
+{
+	for(int x = 0; x < Chunk::CHUNK_SIZE; x++)
+	{
+		for(int z = 0; z < Chunk::CHUNK_SIZE; z++)
+		{
+			double height = generator->getHeightValue(this->mPos.x*16 + x, this->mPos.z*16 + z)*(CHUNK_SIZE-1);
+
+			for(int y = 0; y < (int)height; y++)
+			{
+				mBlocks[x][y][z].setActive(true);
+				mBlocks[x][y][z].setBlockType(y > height - 2 ? GRASS : y < height - 5 ? STONE : DIRT);
+			}
+		}
+	}
 }
 
 void Chunk::activateBlock(int x, int y, int z, bool active)

@@ -12,6 +12,7 @@ public:
 
 	void move(float dt);
 	glm::mat4& getViewMatrix();
+	glm::mat4& getProjectionMatrix();
 
 private:
 
@@ -19,6 +20,8 @@ private:
 
 	static float maxViewY;
 	static float minViewY;
+
+	static int fov;
 
 	float viewX;
 	float viewY;
@@ -32,5 +35,6 @@ private:
 	glm::vec3 up;
 
 	glm::mat4 viewMatrix;
+	glm::mat4 projectionMatrix;
 };
 

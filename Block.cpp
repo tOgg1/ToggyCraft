@@ -21,7 +21,7 @@ void Block::setBlockType(BlockType type)
 
 void Block::setActive(bool active)
 {
-	this->mActive = active;
+	mActive = active;
 }
 
 bool Block::isActive()

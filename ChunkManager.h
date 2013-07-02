@@ -3,6 +3,7 @@
 #include "Camera.h"
 #include "Chunk.h"
 #include "GLRenderer.h"
+#include "TerrainGenerator.h"
 
 class GLRenderer;
 class Chunk;
@@ -18,6 +19,7 @@ public:
 
 private:
 	GLRenderer* pRenderer;
+	TerrainGenerator mGenerator;
 
 	std::vector<Chunk> chunkList;
 	std::vector<Chunk> renderList;

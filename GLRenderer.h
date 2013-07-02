@@ -67,10 +67,6 @@ private:
 	Game* game;
 	Camera* camera;
 
-	float FOV;
-
-	glm::mat4 projectionMatrix;
-
 	int currentID;
 	int activeID;
 	int lockValue;
