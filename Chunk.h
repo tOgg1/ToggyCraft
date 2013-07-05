@@ -38,7 +38,8 @@ public:
 	void createMesh(GLRenderer* pRenderer);
 	void generateTerrain(TerrainGenerator* generator);
 
-	bool flaggedForRender();
+	bool isFlaggedForRender();
+	void flagRender(bool flag);
 
 private:
 	ChunkManager* mChunkManager;

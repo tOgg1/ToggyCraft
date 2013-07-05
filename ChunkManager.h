@@ -4,6 +4,7 @@
 #include "Chunk.h"
 #include "GLRenderer.h"
 #include "TerrainGenerator.h"
+#include "TerrainChunk.h"
 
 class GLRenderer;
 class Chunk;
@@ -17,6 +18,7 @@ public:
 	void update(float dt, Camera* camera);
 	void generateChunks();
 	void getChunkCoordinates(float x, float y, float z, int* sx, int* sy, int* sz);
+	void initializeChunks();
 
 	static int CHUNK_LOAD_PER_FRAME;
 	static int CHUNK_REBUILD_PER_FRAME;
@@ -44,7 +46,6 @@ private:
 	void updateVisibleChunks(Camera* camera);
 	void updateRenderList();
 	void renderChunks();
-	
 
 	std::vector<Chunk*> chunkList;
 	std::vector<Chunk*> renderFlagList;
@@ -54,5 +55,6 @@ private:
 	std::vector<Chunk*> loadList;
 	std::vector<Chunk*> setupList;
 	std::vector<Chunk*> rebuildList;
+	
 };
 

@@ -56,7 +56,7 @@ void GLRenderer::addTriangleToMesh(int id, int id1, int id2, int id3)
 	activeMesh.indices.push_back(id3);
 }
 
-void GLRenderer::finishMesh(int id)
+void GLRenderer::finishMesh(int id, Chunk* chunk)
 {
 	GLuint vertexBuffer, colorBuffer, normalBuffer, indexBuffer;
 	
@@ -64,6 +64,7 @@ void GLRenderer::finishMesh(int id)
 	if(activeMesh.vertices.size() == 0)
 	{
 		activeID--;
+		chunk->flagRender(false);
 		return;
 	}
 

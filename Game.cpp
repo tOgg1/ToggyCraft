@@ -28,6 +28,7 @@ Game::~Game(void)
 
 void Game::start()
 {
+	float time1 = glfwGetTime();
 	initGL();
 
 	camera = new Camera(this, window);
@@ -37,8 +38,9 @@ void Game::start()
 
 	glfwSetMouseButtonCallback(window, &mouseCallBackWrapper);
 	glfwSetKeyCallback(window, &keyCallBackWrapper);
+	float time2 = glfwGetTime();
 
-	manager->generateChunks();
+	printf("Load time: %.6f seconds", time2 - time1);
 
 	this->run();
 }
@@ -50,7 +52,6 @@ void Game::run()
 
 	double lastTime, curTime;
 	float delta;
-
 
 	lastTime = glfwGetTime();
 	do 

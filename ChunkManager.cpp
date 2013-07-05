@@ -2,7 +2,7 @@
 
 int ChunkManager::CHUNK_LOAD_PER_FRAME = 2;
 int ChunkManager::CHUNK_REBUILD_PER_FRAME = 2;
-int ChunkManager::ACTIVE_CHUNKS_SIZE = 8;
+int ChunkManager::ACTIVE_CHUNKS_SIZE = 4;
 
 
 ChunkManager::ChunkManager(GLRenderer* renderer)
@@ -18,12 +18,38 @@ ChunkManager::ChunkManager(GLRenderer* renderer)
 	lastCameraDir = glm::vec3(0,0,0);
 
 	low_x = low_z = low_z = 0;
+	
+	initializeChunks();
 }
 
 
 ChunkManager::~ChunkManager(void)
 {
 	
+}
+
+void ChunkManager::initializeChunks()
+{
+	// initialize a ACTIVE_CHUNKS*ACTIVE_CHUNKS grid	
+	for(int x = 0; x < ACTIVE_CHUNKS_SIZE; x++)
+	{
+		for(int z = 0; z < ACTIVE_CHUNKS_SIZE; z++)
+		{
+			TerrainChunk* terrainChunk = new TerrainChunk(this);
+			std::vector<Chunk*> chunks;
+			for(int y = 0; y < TerrainChunk::TERRAIN_MAX_HEIGHT; y++)
+			{
+				Chunk* chunk = new Chunk(this, glm::vec3(x,y,z));
+				chunk->load();
+				chunks.push_back(chunk);
+				setupList.push_back(chunk);
+				chunkList.push_back(chunk);
+			}
+			terrainChunk->setColumn(chunks);
+			terrainChunk->generateTerrain(mGenerator);
+		}
+	}
+	setupChunks();
 }
 
 void ChunkManager::update(float dt, Camera* camera)
@@ -114,7 +140,6 @@ void ChunkManager::rebuildChunks()
 		{
 			chunk->createMesh(pRenderer);
 			
-
 			glm::vec3 pos = chunk->getPos();
 			int x = (int)pos.x;
 			int y = (int)pos.y;
@@ -167,7 +192,7 @@ void ChunkManager::updateRenderList()
 	for(it = visibilityList.begin(); it != visibilityList.end(); ++it)
 	{
 		Chunk* chunk = (*it);
-		if(chunk->flaggedForRender())
+		if(chunk->isFlaggedForRender())
 		{
 			//TODO: Do frustum check
 			renderList.push_back(chunk);
@@ -181,14 +206,14 @@ void ChunkManager::updateVisibleChunks(Camera* camera)
 	for(it = chunkList.begin(); it != chunkList.end(); ++it)
 	{
 		Chunk* chunk = (*it);
-		glm::vec3 pos = camera->getPos();
+		/*glm::vec3 pos = camera->getPos();
 
 		float camera_x = pos.x;
 		float camera_y = pos.y;
 		float camera_z = pos.z;
 
 		int chunk_x, chunk_y, chunk_z;
-		getChunkCoordinates(camera_x, camera_y, camera_z, &chunk_x, &chunk_y, &chunk_z);
+		getChunkCoordinates(camera_x, camera_y, camera_z, &chunk_x, &chunk_y, &chunk_z);*/
 		visibilityList.push_back(chunk);
 		
 	}
@@ -206,6 +231,7 @@ void ChunkManager::renderChunks()
 	{
 		(*it)->render(pRenderer);
 	}
+	renderFlagList.clear();
 }
 
 Chunk* ChunkManager::getChunk(int x, int y, int z)
@@ -234,10 +260,9 @@ Block* ChunkManager::getBlock(int x, int y, int z)
 		bx = x - sx*size;
 		by = y - sy*size;
 		bz = z - sz*size;
-	
+		
 		return chunk->getBlock(bx, by, bz);
 	}
-
 }
 
 // Convert block-space coordinates into chunk-space coordinates

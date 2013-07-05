@@ -65,7 +65,6 @@ void Chunk::load()
 		}
 	}
 
-	this->generateTerrain(mChunkManager->getTerrainGenerator());
 	mLoaded = true;
 }
 
@@ -99,7 +98,7 @@ void Chunk::update(float dt)
 
 void Chunk::render(GLRenderer* pRenderer)
 {
-	if(meshID != -1)
+	if(meshID != -1 && renderFlag == true)
 	{
 		pRenderer->renderMesh(meshID);
 	}
@@ -124,7 +123,7 @@ void Chunk::createMesh(GLRenderer* pRenderer)
 			}
 		}
 	}
-	pRenderer->finishMesh(meshID);
+	pRenderer->finishMesh(meshID, this);
 }
 
 void Chunk::createCube(int x, int y, int z, GLRenderer* pRenderer)
@@ -273,9 +272,14 @@ Block* Chunk::getBlock(int x, int y, int z)
 	return &mBlocks[x][y][z];
 }
 
-bool Chunk::flaggedForRender()
+bool Chunk::isFlaggedForRender()
 {
 	return renderFlag;
+}
+
+void Chunk::flagRender(bool flag)
+{
+	renderFlag = flag;
 }
 
 void Chunk::activateBlock(int x, int y, int z, bool active)
