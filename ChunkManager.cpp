@@ -189,7 +189,13 @@ void ChunkManager::updateVisibleChunks(Camera* camera)
 
 		int chunk_x, chunk_y, chunk_z;
 		getChunkCoordinates(camera_x, camera_y, camera_z, &chunk_x, &chunk_y, &chunk_z);
+		visibilityList.push_back(chunk);
 		
+	}
+
+	for(it = renderFlagList.begin(); it != renderFlagList.end(); ++it)
+	{
+		//Chunk* chunk = (*it);
 	}
 }
 

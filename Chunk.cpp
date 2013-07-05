@@ -283,7 +283,6 @@ void Chunk::activateBlock(int x, int y, int z, bool active)
 	mBlocks[x][y][z].setActive(active);
 }
 
-
 void Chunk::setBlockType(int x, int y, int z, BlockType type)
 {
 	mBlocks[x][y][z].setBlockType(type);
