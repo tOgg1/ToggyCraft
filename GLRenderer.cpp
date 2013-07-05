@@ -1,7 +1,7 @@
 #include "GLRenderer.h"
 #include "Shader.h"
-#include <glm\gtc\matrix_transform.hpp>
-#include <GL\glfw3.h>
+#include <glm/gtc/matrix_transform.hpp>
+#include <GL/glfw3.h>
 
 
 GLRenderer::GLRenderer(Game* game, GLFWwindow* window, Camera* camera)
@@ -67,7 +67,7 @@ void GLRenderer::finishMesh(int id)
 		return;
 	}
 
-	glGenVertexArrays(1, &vertexBuffer);
+	glGenBuffers(1, &vertexBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3)*activeMesh.vertices.size(), &activeMesh.vertices[0], GL_STATIC_DRAW);
 
@@ -293,7 +293,6 @@ void GLRenderer::renderACube()
 
 void GLRenderer::renderMesh(int id)
 {
-
 	glUseProgram(this->programID);
 	
 	glm::mat4 viewMatrix = camera->getViewMatrix();

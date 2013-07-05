@@ -52,6 +52,16 @@ glm::mat4& Camera::getProjectionMatrix()
 	return projectionMatrix;
 }
 
+glm::vec3& Camera::getPos()
+{
+	return pos;
+}
+
+glm::vec3& Camera::getDir()
+{
+	return dir;
+}
+
 void Camera::move(float dt)
 {
 	double xPos, yPos;

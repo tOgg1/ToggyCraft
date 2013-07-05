@@ -14,6 +14,9 @@ public:
 	glm::mat4& getViewMatrix();
 	glm::mat4& getProjectionMatrix();
 
+	glm::vec3& getPos();
+	glm::vec3& getDir();
+
 private:
 
 	GLFWwindow* window;

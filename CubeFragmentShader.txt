@@ -20,20 +20,23 @@ void main()
 	//vec3 materialAmbientColor = vec3(0.3, 0.3, 0.3) * materialDiffuseColor;
 	//vec3 materialSpecularColor = vec3(0.1, 0.1, 0.1);
 
-	//vec3 normalDir = normalize(normal_cameraspace);
+	// Diffuse calculation
 	vec3 normalDir_worldspace = normalize(vertexNormal_worldspace);
 	vec3 lightDir = vec3(2, 5, -3);
-
 	lightDir = normalize(lightDir);
 
 	float diffuse = 0.3 + clamp(dot(normalDir_worldspace, lightDir), 0, 1);
-	
-	color = fragmentColor * diffuse * lightPower;
 
-	//vec3 eyeDir = normalize(eyeDirection_cameraspace);
-	//ec3 reflectDir = reflect(-lightDir, normalDir);
+	vec3 normalDir = normalize(normal_cameraspace);
+	vec3 eyeDir = normalize(eyeDirection_cameraspace);
+	vec3 reflectDir = reflect(-lightDir, normalDir);
 
-	//float specAttenuation = clamp(dot(eyeDir, reflectDir), 0, 1);
+	float specAttenuation = clamp(dot(eyeDir, reflectDir), 0, 1);
+
+	vec3 specular = vec3(0.1, 0.1, 0.1) * pow(specAttenuation, 5) * 3 * lightPower;
+	specular = vec3(0.0, 0.0, 0.0);
+
+	color = fragmentColor * diffuse * lightPower + specular;
 
 	//color.rgb = materialDiffuseColor * diffuse * lightColor * lightPower +
 	//materialSpecularColor * lightColor * lightPower * pow(specAttenuation, 5);

@@ -42,23 +42,32 @@ TerrainGenerator::~TerrainGenerator(void)
 
 }
 
-// Defining per-chunk grid of 16 units
+// Defining grid of 32 units
 double TerrainGenerator::getHeightValue(int x, int y)
 {
-	// tx, ty values are values transformed into "chunk-space" (Where one chunk is one unit of x or y)
+	double tx, ty;
+	
+	tx = float(x)/32;
+	ty = float(y)/32;
 
-	double tx, ty, rx, ry;
+	double total = 0.0;
+	double frequency = this->frequency;
+	double amplitude = this->amplitude;
+
+	return getValue(tx, ty);
+}
+
+double TerrainGenerator::getValue(double x, double y)
+{
+	double rx, ry;
 	// integer
 	int ix, iy;
 
-	tx = double(x)/16;
-	ty = double(y)/16;
+	ix = fastFloor(x);
+	iy = fastFloor(y);
 
-	ix = fastFloor(tx);
-	iy = fastFloor(ty);
-
-	rx = tx - ix;
-	ry = ty - iy;
+	rx = x - ix;
+	ry = y - iy;
 
 	// gradient indices
 	int i00, i10, i01, i11;
@@ -69,12 +78,37 @@ double TerrainGenerator::getHeightValue(int x, int y)
 	i10 = p[(ix+1 +p[iy]) % 255] % 10;
 	i11 = p[(ix+1 +p[iy+1]) % 255] % 10;
 
-	// noise contributions for each corner
-	double n00, n10, n01, n11;
-	n00 = dot(grad2[i00], rx, ry); 
-	n10 = dot(grad2[i10], rx-1, ry);
-	n01 = dot(grad2[i01], rx, ry-1);
-	n11 = dot(grad2[i11], rx-1, ry-1);
+	/*double n01 = noise(ix-1, iy-1);
+	double n02 = noise(ix+1, iy-1);
+	double n03 = noise(ix-1, iy+1);
+	double n04 = noise(ix+1, iy+1);
+	double n05 = noise(ix-1, iy);
+	double n06 = noise(ix+1, iy);
+	double n07 = noise(ix, iy-1);
+	double n08 = noise(ix, iy+1);
+	double n09 = noise(ix, iy);
+
+	double n12 = noise(ix+2, iy-1);
+	double n14 = noise(ix+2, iy+1);
+	double n16 = noise(ix+2, iy);
+
+	double n23 = noise(ix-1, iy+2);
+	double n24 = noise(ix+1, iy+2);
+	double n28 = noise(ix, iy+2);
+
+	double n34 = noise(ix+2, iy+2);
+
+	//find the noise values of the four corners
+	double c00 = 0.0625*(n01+n02+n03+n04) + 0.125*(n05+n06+n07+n08) + 0.25*(n09);  
+	double c10 = 0.0625*(n07+n12+n08+n14) + 0.125*(n09+n16+n02+n04) + 0.25*(n06);  
+	double c01 = 0.0625*(n05+n06+n23+n24) + 0.125*(n03+n04+n09+n28) + 0.25*(n08);  
+	double c11 = 0.0625*(n09+n16+n28+n34) + 0.125*(n08+n14+n06+n24) + 0.25*(n04);  
+	*/
+	
+	double c00 = dot(grad2[i00], rx, ry); 
+	double c10 = dot(grad2[i10], rx-1, ry);
+	double c01 = dot(grad2[i01], rx, ry-1);
+	double c11 = dot(grad2[i11], rx-1, ry-1);
 
 	// get faded x and y values
 	double x_fade, y_fade;
@@ -85,16 +119,25 @@ double TerrainGenerator::getHeightValue(int x, int y)
 	double final_x0, final_x1, final_xy;
 
 	// along x
-	final_x0 = interpolate(n00, n01, x_fade);
-	final_x1 = interpolate(n10, n11, x_fade);
+	final_x0 = interpolate(c00, c10, x_fade);
+	final_x1 = interpolate(c01, c11, x_fade);
 
-	final_xy = interpolate(final_x0, final_x0, y_fade);
+	final_xy = interpolate(final_x0, final_x1, y_fade);
 
 	//Skew from [-1, 1] to [0, 1]
 	final_xy = (final_xy + 1)*0.5f;
 
 	//is there another fix?
 	return final_xy > 1 ? 1 : final_xy;
+}
+
+// Generate some random numbers
+double TerrainGenerator::noise(int x, int y)
+{
+    int n = x + y * 57;
+    n = (n << 13) ^ n;
+	int t = (n * (n * n * 15731 + 789221) + 1376312589) & 0x7fffffff;
+    return 1.0 - double(t) * 0.931322574615478515625e-9; /// 1073741824.0);
 }
 
 void TerrainGenerator::seedGenerator(double seed)
@@ -104,15 +147,30 @@ void TerrainGenerator::seedGenerator(double seed)
 	locked = true;
 }
 
-double TerrainGenerator::interpolate(double a, double b, double t)
+void TerrainGenerator::setFrequency(double frequency)
 {
-	return (1-t)*a + t*b;
+	this->frequency = frequency;
 }
 
-// Fade with the formula 6t^5 -15t^4 + 10t^3
+void TerrainGenerator::setOcatves(double octaves)
+{
+	this->octaves = octaves;
+}
+
+void TerrainGenerator::setAmplitude(double amplitude)
+{
+	this->amplitude = amplitude;
+}
+
+double TerrainGenerator::interpolate(double a, double b, double t)
+{
+	return (1-t)*a + (t*b);
+}
+
+// Fade with the formula 3t^2 - 2t^3
 double TerrainGenerator::fade(double t)
 { 
-	return t*t*t*(t*(6*t-15)+10);
+	return t*t*(3 - 2*t);
 }
 
 double TerrainGenerator::dot(double vec[], double x, double y)
