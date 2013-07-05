@@ -1,78 +1,187 @@
-diff --git a/Block.h b/Block.h
-index bb22e43..37d9402 100644
---- a/Block.h
-+++ b/Block.h
-@@ -1,6 +1,6 @@
- #pragma once
+diff --git a/Chunk.h b/Chunk.h
+index a86a57f..0d38672 100644
+--- a/Chunk.h
++++ b/Chunk.h
+@@ -2,7 +2,7 @@
  
--#include <glm\glm.hpp>
-+#include <glm/glm.hpp>
+ #include "Block.h"
+ #include "GLRenderer.h"
+-#include "TerrainGenerator.h";
++#include "TerrainGenerator.h"
  
- enum BlockType
+ class TerrainGenerator;
+ class ChunkManager;
+diff --git a/ChunkManager.h b/ChunkManager.h
+index a419e81..2e801d4 100644
+--- a/ChunkManager.h
++++ b/ChunkManager.h
+@@ -22,8 +22,8 @@ public:
+ 	static int CHUNK_REBUILD_PER_FRAME;
+ 	static int ACTIVE_CHUNKS_SIZE;
+ 
+-	TerrainGenerator* ChunkManager::getTerrainGenerator();
+-	GLRenderer* ChunkManager::getRenderer();
++	TerrainGenerator* getTerrainGenerator();
++	GLRenderer* getRenderer();
+ 
+ 	Chunk* getChunk(int x, int y, int z);
+ 	Block* getBlock(int x, int y, int z);
+diff --git a/CubeFragmentShader.txt b/CubeFragmentShader.txt
+index 7fbe47b..313384f 100644
+--- a/CubeFragmentShader.txt
++++ b/CubeFragmentShader.txt
+@@ -1,4 +1,4 @@
+-#version 330 core
++#version 130
+ 
+ in vec3 position_worldspace;
+ in vec3 normal_cameraspace;
+@@ -36,10 +36,10 @@ void main()
+ 	vec3 specular = vec3(0.1, 0.1, 0.1) * pow(specAttenuation, 5) * 3 * lightPower;
+ 	specular = vec3(0.0, 0.0, 0.0);
+ 
+-	color = fragmentColor * diffuse * lightPower + specular;
++	color = vec4(/*fragmentColor * diffuse * lightPower + */specular, 1.0);
+ 
+ 	//color.rgb = materialDiffuseColor * diffuse * lightColor * lightPower +
+ 	//materialSpecularColor * lightColor * lightPower * pow(specAttenuation, 5);
+ 
+ 	//color.a = 1.0;
+-}
+\ No newline at end of file
++}
+diff --git a/CubeVertexShader.txt b/CubeVertexShader.txt
+index b6abd8b..521cae9 100644
+--- a/CubeVertexShader.txt
++++ b/CubeVertexShader.txt
+@@ -1,4 +1,4 @@
+-#version 330 core
++#version 130
+ 
+ in vec3 vertexPosition_modelspace;
+ in vec4 vertexColor;
+@@ -26,4 +26,4 @@ void main()
+ 	normal_cameraspace = (View * Model * vec4(vertexNormal_modelspace, 0)).xyz;	
+ 
+ 	fragmentColor = vertexColor;
+-}
+\ No newline at end of file
++}
+diff --git a/Game.cpp b/Game.cpp
+index c8fe42e..af641db 100644
+--- a/Game.cpp
++++ b/Game.cpp
+@@ -33,6 +33,10 @@ void Game::start()
+ 	camera = new Camera(window);
+ 	renderer = new GLRenderer(this, window, camera);
+ 	manager = new ChunkManager(renderer);
++	inputManager = new InputManager(window);
++
++	// aner ikke hvor du vil ha disse :P
++	glfwSetMouseButtonCallback(window, &mouseCallBackWrapper);
+ 
+ 	manager->generateChunks();
+ 
+@@ -87,22 +91,23 @@ void Game::initGL()
+ 		fprintf(stderr, "Failed to create window");
+ 	}
+ 
++	glfwSetWindowUserPointer(window, this);
++
+ 	glfwMakeContextCurrent(this->window);
+     glfwWindowHint(GLFW_SAMPLES, 4);
+     glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
+     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
+     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+ 
+-	glEnable(GL_DEPTH_TEST);
+-	glEnable(GL_CULL_FACE);
+-	glDepthFunc(GL_LESS);
+-
+ 	GLenum err = glewInit();
+ 	if(err != GLEW_OK)
+ 	{
+ 		fprintf(stderr, "Error: %s\n", glewGetErrorString(err));
+ 	}
+ 
++	glEnable(GL_DEPTH_TEST);
++	glEnable(GL_CULL_FACE);
++	glDepthFunc(GL_LESS);
+ }
+ 
+ void Game::cleanup()
+@@ -113,3 +118,8 @@ void Game::cleanup()
+ 	delete manager;
+ 	glfwDestroyWindow(this->window);
+ }
++
++void Game::mouseCallBackWrapper(GLFWwindow* window, int button, int pressed, int modifier)
++{
++	windowGetGame(window)->inputManager->mouseCallBack(window, button, pressed, modifier);
++}
+diff --git a/Game.h b/Game.h
+index 059a5fe..1d96198 100644
+--- a/Game.h
++++ b/Game.h
+@@ -5,6 +5,7 @@
+ #include "GLRenderer.h"
+ #include "ChunkManager.h"
+ #include "Camera.h"
++#include "InputManager.h"
+ 
+ // Include GLM
+ #include <glm/glm.hpp>
+@@ -21,6 +22,7 @@ class Game
+ 		GLRenderer* renderer;
+ 		Camera* camera;
+ 		ChunkManager* manager;
++		InputManager* inputManager;
+ 
+ 		Game(void);
+ 		~Game(void);
+@@ -33,5 +35,10 @@ class Game
+ 	private:
+ 		void cleanup();
+ 		void initGL();
+-};
+ 
++		static Game *windowGetGame(GLFWwindow *window) {
++			return static_cast<Game *>(glfwGetWindowUserPointer(window));
++		}
++
++		static void mouseCallBackWrapper(GLFWwindow* window, int button, int pressed, int modifier);
++};
+diff --git a/InputManager.cpp b/InputManager.cpp
+index 4039f4a..824f3f4 100644
+--- a/InputManager.cpp
++++ b/InputManager.cpp
+@@ -5,19 +5,10 @@
+ InputManager::InputManager(GLFWwindow* window)
  {
-diff --git a/Camera.cpp b/Camera.cpp
-index 0aac763..376210b 100644
---- a/Camera.cpp
-+++ b/Camera.cpp
-@@ -1,7 +1,7 @@
- #include "Camera.h"
- #include "GLRenderer.h"
- #include <algorithm>
--#include <glm\gtc\matrix_transform.hpp>
-+#include <glm/gtc/matrix_transform.hpp>
- #include <GL/glfw3.h>
+ 	this->window = window;
+-	init();
+ }
  
- float Camera::maxViewY = 3.14f/2;
-diff --git a/Camera.h b/Camera.h
-index 8a175a6..daf79ae 100644
---- a/Camera.h
-+++ b/Camera.h
-@@ -1,6 +1,6 @@
- #pragma once
+-
+ InputManager::~InputManager(void)
+ {
+-
+-}
+-
+-void InputManager::init()
+-{
+-	//glfwSetMouseButtonCallback(window, (GLFWmousebuttonfun) mouseCallBack);
+-
+ }
  
--#include <glm\glm.hpp>
-+#include <glm/glm.hpp>
- 
- struct GLFWwindow;
- 
-diff --git a/GLRenderer.cpp b/GLRenderer.cpp
-index 548537c..cd868b0 100644
---- a/GLRenderer.cpp
-+++ b/GLRenderer.cpp
-@@ -1,5 +1,5 @@
- #include "GLRenderer.h"
--#include "shader.h"
-+#include "Shader.h"
- #include <glm/gtc/matrix_transform.hpp>
- #include <GL/glfw3.h>
- 
-diff --git a/GLRenderer.h b/GLRenderer.h
-index a59a0b3..8602ac2 100644
---- a/GLRenderer.h
-+++ b/GLRenderer.h
-@@ -1,7 +1,7 @@
- #pragma once
- 
--#include <GL\glew.h>
--#include <glm\glm.hpp>
-+#include <GL/glew.h>
-+#include <glm/glm.hpp>
- 
- #include "Game.h"
- #include "Camera.h"
-diff --git a/Shader.cpp b/Shader.cpp
-index 7f6d66f..2f31d70 100644
---- a/Shader.cpp
-+++ b/Shader.cpp
-@@ -11,7 +11,7 @@ using namespace std;
- 
- #include <GL/glew.h>
- 
--#include "shader.h"
-+#include "Shader.h"
- 
- GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path){
- 
+ void InputManager::update()
+@@ -57,4 +48,4 @@ bool InputManager::keyIsPressed(char c)
+ bool InputManager::mouseIsPressed(KeyButtons button)
+ {
+ 	return mouse[button];
+-}
+\ No newline at end of file
++}
 diff --git a/Shader.h b/Shader.h
 index 82e148d..c1e0380 100644
 --- a/Shader.h
@@ -84,3 +193,20 @@ index 82e148d..c1e0380 100644
 -GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path);
 \ No newline at end of file
 +GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path);
+diff --git a/main.cpp b/main.cpp
+index 89217f9..fb82457 100644
+--- a/main.cpp
++++ b/main.cpp
+@@ -6,9 +6,9 @@ int main(int argv, char** argc)
+ {
+ 	Block block();
+ 
+-	printf("Size %d", sizeof(Block));
++	printf("Size %zu", sizeof(Block));
+ 
+ 	Game* game = new Game();
+ 	game->start();	
+ 	return 0;
+-}
+\ No newline at end of file
++}

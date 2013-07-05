@@ -30,9 +30,13 @@ void Game::start()
 {
 	initGL();
 
-	camera = new Camera(window);
+	camera = new Camera(this, window);
 	renderer = new GLRenderer(this, window, camera);
 	manager = new ChunkManager(renderer);
+	inputManager = new InputManager(window);
+
+	glfwSetMouseButtonCallback(window, &mouseCallBackWrapper);
+	glfwSetKeyCallback(window, &keyCallBackWrapper);
 
 	manager->generateChunks();
 
@@ -57,10 +61,11 @@ void Game::run()
 
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
+		inputManager->update();
 		camera->move(delta);
 		glfwSetCursorPos(window, Game::screenWidth/2, Game::screenHeight/2);
 
-		renderer->renderACube();
+		//renderer->renderACube();
 		manager->update(delta, camera);
 
 		glfwSwapBuffers(this->window);
@@ -87,15 +92,13 @@ void Game::initGL()
 		fprintf(stderr, "Failed to create window");
 	}
 
+	glfwSetWindowUserPointer(window, this);
+
 	glfwMakeContextCurrent(this->window);
     glfwWindowHint(GLFW_SAMPLES, 4);
     glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
-
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
-	glDepthFunc(GL_LESS);
 
 	GLenum err = glewInit();
 	if(err != GLEW_OK)
@@ -103,13 +106,25 @@ void Game::initGL()
 		fprintf(stderr, "Error: %s\n", glewGetErrorString(err));
 	}
 
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+	glDepthFunc(GL_LESS);
 }
 
 void Game::cleanup()
-{
-	
+{	
 	delete camera;
 	delete renderer;
 	delete manager;
 	glfwDestroyWindow(this->window);
+}
+
+void Game::mouseCallBackWrapper(GLFWwindow* window, int button, int pressed, int modifier)
+{
+	windowGetGame(window)->inputManager->mouseCallBack(window, button, pressed, modifier);
+}
+
+void Game::keyCallBackWrapper(GLFWwindow* window, int key, int scancode, int action, int modifier)
+{
+	windowGetGame(window)->inputManager->keyCallBack(window, key, scancode, action, modifier);
 }

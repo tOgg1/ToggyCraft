@@ -10,6 +10,7 @@
 #include <vector>
 
 class Game;
+class Camera;
 
 struct Mesh
 {

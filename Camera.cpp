@@ -8,9 +8,10 @@ float Camera::maxViewY = 3.14f/2;
 float Camera::minViewY = -3.14f/2;
 int Camera::fov = 70;
 
-Camera::Camera(GLFWwindow* window)
+Camera::Camera(Game* game, GLFWwindow* window)
 {
 	this->window = window;
+	this->game = game;
 
 	viewX = 3.14f;
 	viewY = 0.0f;
@@ -66,7 +67,8 @@ void Camera::move(float dt)
 {
 	double xPos, yPos;
 	
-	glfwGetCursorPos(this->window, &xPos, &yPos);
+	xPos = game->inputManager->getMouseX();
+	yPos = game->inputManager->getMouseY();
 	
 	viewX += dt*mouseLimiter*float(Game::screenWidth/2 - xPos);
 	viewY += dt*mouseLimiter*float(Game::screenHeight/2 - yPos);

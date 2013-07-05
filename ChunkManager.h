@@ -22,8 +22,8 @@ public:
 	static int CHUNK_REBUILD_PER_FRAME;
 	static int ACTIVE_CHUNKS_SIZE;
 
-	TerrainGenerator* ChunkManager::getTerrainGenerator();
-	GLRenderer* ChunkManager::getRenderer();
+	TerrainGenerator* getTerrainGenerator();
+	GLRenderer* getRenderer();
 
 	Chunk* getChunk(int x, int y, int z);
 	Block* getBlock(int x, int y, int z);

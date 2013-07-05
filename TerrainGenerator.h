@@ -8,7 +8,7 @@ public:
 
 	double getHeightValue(int x, int y);
 
-	void seedGenerator(double seed);
+	void seedGenerator(int seed);
 	void setFrequency(double frequency);
 	void setOcatves(double setOctaves);
 	void setAmplitude(double amplitude);

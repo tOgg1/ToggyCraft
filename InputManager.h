@@ -1,21 +1,5 @@
 #pragma once
-
-enum KeyButtons
-{
-	LEFT = 0,
-	RIGHT,
-	MIDDLE,
-	MISC_1,
-	MISC_2,
-	MISC_3,
-	MISC_4,
-	MISC_5,
-	MISC_6,
-	MISC_7,
-	MISC_8
-};
-
-class GLFWwindow;
+#include <GL/glfw3.h>
 
 class InputManager
 {
@@ -25,20 +9,23 @@ public:
 
 	void init();
 	void update();
+
 	void mouseCallBack(GLFWwindow* window, int button, int pressed, int modifier);
-	void charCallBack(int character, int pressed);
+	void keyCallBack(GLFWwindow* window, int key, int scancode, int action, int modifier);
 
 	bool keyIsPressed(char c);
-	bool mouseIsPressed(KeyButtons button);
+	bool mouseIsPressed(int button);
 
 	void getMousePos(double* posx, double* posy);
+	double getMouseX();
+	double getMouseY();
 
 private:
 	GLFWwindow* window;
 
 	double mouse_posx, mouse_posy;
 	
-	bool keys[0xFF];
+	bool keys[350];
 	bool mouse[0xF];
 };
 

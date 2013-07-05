@@ -1,22 +1,13 @@
 #include "InputManager.h"
-#include <GL/glfw3.h>
 
 
 InputManager::InputManager(GLFWwindow* window)
 {
 	this->window = window;
-	init();
 }
-
 
 InputManager::~InputManager(void)
 {
-
-}
-
-void InputManager::init()
-{
-	//glfwSetMouseButtonCallback(window, (GLFWmousebuttonfun) mouseCallBack);
 
 }
 
@@ -30,20 +21,20 @@ void InputManager::mouseCallBack(GLFWwindow* window, int button, int pressed, in
 	if(button < 0xF)
 	{
 		if(pressed)
-			InputManager::mouse[button] = true;
+			mouse[button] = true;
 		else
-			InputManager::mouse[button] = false;
+			mouse[button] = false;
 	}
 }
 
-void InputManager::charCallBack(int character, int pressed)
+void InputManager::keyCallBack(GLFWwindow* window, int key, int scancode, int action, int modifier)
 {
-	if(character < 0xFF)
+	if(key < 350)
 	{
-		if(pressed == GLFW_PRESS)
-			keys[character] = true;
+		if(action == GLFW_PRESS)
+			keys[key] = true;
 		else
-			keys[character] = false;
+			keys[key] = false;
 	}
 }
 
@@ -54,7 +45,25 @@ bool InputManager::keyIsPressed(char c)
 	return false;
 }
 
-bool InputManager::mouseIsPressed(KeyButtons button)
+bool InputManager::mouseIsPressed(int button)
 {
 	return mouse[button];
 }
+
+void InputManager::getMousePos(double* posx, double* posy)
+{
+	*posx = mouse_posx;
+	*posy = mouse_posy;
+}
+
+
+double InputManager::getMouseX()
+{
+	return mouse_posx;
+}
+
+double InputManager::getMouseY()
+{
+	return mouse_posy;
+}
+

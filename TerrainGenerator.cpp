@@ -140,7 +140,7 @@ double TerrainGenerator::noise(int x, int y)
     return 1.0 - double(t) * 0.931322574615478515625e-9; /// 1073741824.0);
 }
 
-void TerrainGenerator::seedGenerator(double seed)
+void TerrainGenerator::seedGenerator(int seed)
 {
 	if(!locked)
 		this->seed = seed;

@@ -2,7 +2,7 @@
 
 #include "Block.h"
 #include "GLRenderer.h"
-#include "TerrainGenerator.h";
+#include "TerrainGenerator.h"
 
 class TerrainGenerator;
 class ChunkManager;

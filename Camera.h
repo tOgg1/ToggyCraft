@@ -1,13 +1,15 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include "Game.h"
 
 struct GLFWwindow;
+class Game;
 
 class Camera
 {
 public:
-	Camera(GLFWwindow* window);
+	Camera(Game* game, GLFWwindow* window);
 	~Camera(void);
 
 	void move(float dt);
@@ -20,6 +22,7 @@ public:
 private:
 
 	GLFWwindow* window;
+	Game* game;
 
 	static float maxViewY;
 	static float minViewY;
