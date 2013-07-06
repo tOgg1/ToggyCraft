@@ -47,8 +47,8 @@ double TerrainGenerator::getHeightValue(int x, int y)
 {
 	double tx, ty;
 	
-	tx = float(x)/32;
-	ty = float(y)/32;
+	tx = float(x)/64;
+	ty = float(y)/64;
 
 	double total = 0.0;
 	double frequency = this->frequency;

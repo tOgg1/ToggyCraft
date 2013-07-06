@@ -23,9 +23,12 @@ public:
 	void load();
 	void unload();
 	void setup();
+	void setChanged();
 
 	bool isLoaded();
 	bool isSetup();
+	bool isBuilt();
+	bool hasChanged();
 
 	glm::vec4 getCubeColor(int x, int y, int z);
 	glm::vec3 getPos();
@@ -45,8 +48,11 @@ private:
 	ChunkManager* mChunkManager;
 
 	int meshID;
+
 	bool mLoaded;
 	bool mSetup;
+	bool mBuilt;
+	bool mChanged;
 	bool renderFlag;
 
 	Block*** mBlocks;

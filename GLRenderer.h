@@ -39,6 +39,8 @@ public:
 	GLRenderer(Game* game, GLFWwindow* window, Camera* camera);
 	~GLRenderer(void);
 
+	void update();
+
 	void startMesh(int* id);
 	void finishMesh(int id, Chunk* chunk);
 
@@ -48,7 +50,9 @@ public:
 	void renderACube();
 	void renderMesh(int id);
 
-	bool cubeInFrustum(glm::mat4, glm::vec3 center, float size_x, float size_y, float size_z);
+	bool chunkInFrustum(Chunk* chunk);
+	bool pointInFrustum(glm::vec3 pos);
+	bool sphereInFrustum(glm::vec3 center, double radius);
 
 	void setTranslation(glm::vec3 pos);
 
@@ -73,7 +77,6 @@ private:
 	int currentID;
 	int activeID;
 	int lockValue;
-	
 
 	Mesh activeMesh;
 	std::map<unsigned int, MeshBuffer> meshBuffers;

@@ -28,6 +28,11 @@ GLRenderer::~GLRenderer(void)
 
 }
 
+void GLRenderer::update()
+{
+
+}
+
 void GLRenderer::startMesh(int* id)
 {
 	*id = getNextID();
@@ -324,6 +329,23 @@ void GLRenderer::renderMesh(int id)
 	glDisableVertexAttribArray(posHandle);
 	glDisableVertexAttribArray(colorHandle);
 	glDisableVertexAttribArray(normalHandle);
+}
+
+bool GLRenderer::chunkInFrustum(Chunk* chunk)
+{
+	return true;
+}
+
+bool GLRenderer::pointInFrustum(glm::vec3 pos)
+{
+	return true;
+
+}
+
+bool GLRenderer::sphereInFrustum(glm::vec3 center, double radius)
+{
+	return true;
+
 }
 
 void GLRenderer::setTranslation(glm::vec3 pos)

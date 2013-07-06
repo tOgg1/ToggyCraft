@@ -8,6 +8,7 @@ Chunk::Chunk(ChunkManager* manager, glm::vec3 pos)
 	mBlocks = new Block**[CHUNK_SIZE];
 	mLoaded = false;
 	mSetup = false;
+	mBuilt = false;
 	renderFlag = true;
 }
 
@@ -47,7 +48,7 @@ void Chunk::setup()
 {
 	if(mSetup)
 		return;
-	this->createMesh(mChunkManager->getRenderer());
+	// Necessary?
 }
 
 void Chunk::load()
@@ -91,6 +92,21 @@ bool Chunk::isSetup()
 	return mSetup;
 }
 
+bool Chunk::isBuilt()
+{
+	return mBuilt;
+}
+
+bool Chunk::hasChanged()
+{
+	return mChanged;
+}
+
+void Chunk::setChanged()
+{
+	mChanged = true;
+}
+
 void Chunk::update(float dt)
 {
 	
@@ -124,6 +140,8 @@ void Chunk::createMesh(GLRenderer* pRenderer)
 		}
 	}
 	pRenderer->finishMesh(meshID, this);
+	mBuilt = true;
+	mChanged = false;
 }
 
 void Chunk::createCube(int x, int y, int z, GLRenderer* pRenderer)
