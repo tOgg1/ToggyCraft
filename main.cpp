@@ -1,13 +1,11 @@
 #include <stdio.h>
 #include "Game.h"
+#include "Chunk.h"
 #include "Block.h"
+#include <GL\glfw3.h>
 
 int main(int argv, char** argc)
 {
-	Block block();
-
-	printf("Size %d", sizeof(Block));
-
 	Game* game = new Game();
 	game->start();	
 	return 0;

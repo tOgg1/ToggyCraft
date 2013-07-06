@@ -40,7 +40,18 @@ void Game::start()
 	glfwSetKeyCallback(window, &keyCallBackWrapper);
 	float time2 = glfwGetTime();
 
-	printf("Load time: %.6f seconds", time2 - time1);
+	Chunk* chunk = new Chunk(manager, glm::vec3(0,0,0));
+	chunk->load();
+	for(int i = 0; i < 16; i++)
+	{
+		for(int j = 0; j < 16; j++)
+		{
+			for(int k = 0; k < 16; k++)
+			{
+				chunk->activateBlock(i,j,k,true);
+			}
+		}
+	}
 
 	glfwShowWindow(this->window);
 

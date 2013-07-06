@@ -4,7 +4,6 @@ int ChunkManager::CHUNK_LOAD_PER_FRAME = 2;
 int ChunkManager::CHUNK_REBUILD_PER_FRAME = 2;
 int ChunkManager::ACTIVE_CHUNKS_SIZE = 10;
 
-
 ChunkManager::ChunkManager(GLRenderer* renderer)
 {
 	pRenderer = renderer;
