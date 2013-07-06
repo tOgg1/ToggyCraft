@@ -28,8 +28,8 @@ Game::~Game(void)
 
 void Game::start()
 {
-	float time1 = glfwGetTime();
 	initGL();
+	float time1 = glfwGetTime();
 
 	camera = new Camera(this, window);
 	renderer = new GLRenderer(this, window, camera);
@@ -41,6 +41,8 @@ void Game::start()
 	float time2 = glfwGetTime();
 
 	printf("Load time: %.6f seconds", time2 - time1);
+
+	glfwShowWindow(this->window);
 
 	this->run();
 }
@@ -86,6 +88,7 @@ void Game::initGL()
 	}
 
 	this->window = glfwCreateWindow(screenWidth, screenHeight, "ToggyCraft", NULL, NULL);
+	glfwHideWindow(this->window);
 	
 	if(!this->window)
 	{

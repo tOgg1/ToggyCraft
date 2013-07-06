@@ -31,6 +31,8 @@ ChunkManager::~ChunkManager(void)
 void ChunkManager::initializeChunks()
 {
 	// initialize a ACTIVE_CHUNKS*ACTIVE_CHUNKS grid	
+	float sizexz = ACTIVE_CHUNKS_SIZE;
+	float sizey = TerrainChunk::TERRAIN_MAX_HEIGHT;
 	for(int x = 0; x < ACTIVE_CHUNKS_SIZE; x++)
 	{
 		for(int z = 0; z < ACTIVE_CHUNKS_SIZE; z++)
@@ -39,22 +41,28 @@ void ChunkManager::initializeChunks()
 			std::vector<Chunk*> chunks;
 			for(int y = 0; y < TerrainChunk::TERRAIN_MAX_HEIGHT; y++)
 			{
+				
+				float percent = float(x)*sizexz*sizey + float(z)*sizey + y;
+				percent = percent*100/(sizexz*sizexz*sizey);
+				printf("Initializing chunks: %f %% \r", percent);
 				Chunk* chunk = new Chunk(this, glm::vec3(x,y,z));
 				chunk->load();
 				chunks.push_back(chunk);
 				setupList.push_back(chunk);
 				chunkList.push_back(chunk);
+				renderList.push_back(chunk);
 			}
 			terrainChunk->setColumn(chunks);
 			terrainChunk->generateTerrain(mGenerator);
 		}
 	}
+	printf("Initializing chunks: 100 %%");
 	setupChunks();
 }
 
 void ChunkManager::update(float dt, Camera* camera)
 {
-	/*loadChunks();
+	loadChunks();
 	setupChunks();
 	rebuildChunks();
 	unloadChunks();
@@ -64,12 +72,12 @@ void ChunkManager::update(float dt, Camera* camera)
 	{
 		updateRenderList();
 	}
-
+	
 	renderChunks();
 
 	lastCameraPos = camera->getPos();
 	lastCameraDir = camera->getDir();
-	*/
+	/*
 	int size = 0;
 	std::vector<Chunk*>::iterator it;
 	
@@ -77,23 +85,7 @@ void ChunkManager::update(float dt, Camera* camera)
 	{
 		++size;
 		(*it)->render(pRenderer);
-	}
-}
-
-void ChunkManager::generateChunks()
-{
-	// Implement perlin noise
-	for(int i = 0; i < 10; i++)
-	{
-		for(int j = 0; j < 10; j++)
-		{
-			Chunk* chunk = new Chunk(this, glm::vec3(i,0,j));
-			chunk->load();
-			chunk->generateTerrain(mGenerator);
-			chunk->createMesh(pRenderer);
-			chunkList.push_back(chunk);
-		}
-	}
+	}*/
 }
 
 void ChunkManager::loadChunks()
@@ -202,6 +194,7 @@ void ChunkManager::updateRenderList()
 
 void ChunkManager::updateVisibleChunks(Camera* camera)
 {
+	visibilityList.clear();
 	std::vector<Chunk*>::iterator it;
 	for(it = chunkList.begin(); it != chunkList.end(); ++it)
 	{
@@ -215,12 +208,6 @@ void ChunkManager::updateVisibleChunks(Camera* camera)
 		int chunk_x, chunk_y, chunk_z;
 		getChunkCoordinates(camera_x, camera_y, camera_z, &chunk_x, &chunk_y, &chunk_z);*/
 		visibilityList.push_back(chunk);
-		
-	}
-
-	for(it = renderFlagList.begin(); it != renderFlagList.end(); ++it)
-	{
-		//Chunk* chunk = (*it);
 	}
 }
 
