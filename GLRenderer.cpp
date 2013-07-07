@@ -42,8 +42,8 @@ void GLRenderer::startMesh(int* id)
 
 int GLRenderer::addPointToMesh(int id, glm::vec3 point, glm::vec4 color, glm::vec3 normal)
 {
-	if(id != activeID)
-		return -1;
+	//if(id != activeID)
+	//	return -1;
 	activeMesh.vertices.push_back(point);
 	activeMesh.colors.push_back(color);
 	activeMesh.normals.push_back(normal);

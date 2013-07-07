@@ -2,7 +2,7 @@
 #include "Game.h"
 #include "Chunk.h"
 #include "Block.h"
-#include <GL\glfw3.h>
+#include <GL/glfw3.h>
 
 int main(int argv, char** argc)
 {

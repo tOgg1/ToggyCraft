@@ -263,7 +263,6 @@ void Chunk::createCube(int x, int y, int z, GLRenderer* pRenderer)
 		pRenderer->addTriangleToMesh(meshID, id6, id5, id2);
 		pRenderer->addTriangleToMesh(meshID, id6, id2, id1);
 	}
-
 }
 
 void Chunk::generateTerrain(TerrainGenerator* generator)
