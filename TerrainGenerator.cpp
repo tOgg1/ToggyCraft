@@ -152,7 +152,7 @@ void TerrainGenerator::setFrequency(double frequency)
 	this->frequency = frequency;
 }
 
-void TerrainGenerator::setOcatves(double octaves)
+void TerrainGenerator::setOctaves(double octaves)
 {
 	this->octaves = octaves;
 }

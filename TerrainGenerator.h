@@ -10,7 +10,7 @@ public:
 
 	void seedGenerator(int seed);
 	void setFrequency(double frequency);
-	void setOcatves(double setOctaves);
+	void setOctaves(double setOctaves);
 	void setAmplitude(double amplitude);
 
 private:

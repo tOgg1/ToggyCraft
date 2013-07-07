@@ -11,7 +11,7 @@ ChunkManager::ChunkManager(GLRenderer* renderer)
 
 	mGenerator->setAmplitude(2.0);
 	mGenerator->setFrequency(1.0);
-	mGenerator->setOcatves(1.5);
+	mGenerator->setOctaves(1.5);
 
 	lastCameraPos = glm::vec3(0,0,0);
 	lastCameraDir = glm::vec3(0,0,0);
@@ -224,7 +224,7 @@ Chunk* ChunkManager::getChunk(int x, int y, int z)
 	int size = ChunkManager::ACTIVE_CHUNKS_SIZE;
 	int index = (x-low_x) + (y-low_y)*size + (z-low_z)*size*size;
 
-	if(index > chunkList.size() || index < 0 )
+	if(index >= chunkList.size() || index < 0 )
 		return NULL;
 	return chunkList[index];
 }
