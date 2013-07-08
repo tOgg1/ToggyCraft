@@ -40,7 +40,7 @@ void GLRenderer::startMesh(int* id)
 	activeMesh.translation = glm::vec3(0,0,0);
 }
 
-int GLRenderer::addPointToMesh(int id, glm::vec3 point, glm::vec4 color, glm::vec3 normal)
+int GLRenderer::addPointToMesh(int id, glm::vec3 &point, glm::vec4 &color, glm::vec3 &normal)
 {
 	//if(id != activeID)
 	//	return -1;

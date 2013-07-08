@@ -42,13 +42,13 @@ TerrainGenerator::~TerrainGenerator(void)
 
 }
 
-// Defining grid of 32 units
+// Defining grid of 64 units
 double TerrainGenerator::getHeightValue(int x, int y)
 {
 	double tx, ty;
 	
-	tx = float(x)/64;
-	ty = float(y)/64;
+	tx = float(x)/GENERATOR_GRID_SIZE;
+	ty = float(y)/GENERATOR_GRID_SIZE;
 
 	double total = 0.0;
 	double frequency = this->frequency;
@@ -60,7 +60,6 @@ double TerrainGenerator::getHeightValue(int x, int y)
 double TerrainGenerator::getValue(double x, double y)
 {
 	double rx, ry;
-	// integer
 	int ix, iy;
 
 	ix = fastFloor(x);

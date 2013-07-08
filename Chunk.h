@@ -15,7 +15,7 @@ public:
 	Chunk(ChunkManager* manager, glm::vec3 pos);
 	~Chunk(void);
 
-	static const int CHUNK_SIZE = 16;
+	static const int CHUNK_SIZE = 64;
 
 	void update(float dt);
 	void render(GLRenderer* pRenderer);
@@ -28,6 +28,7 @@ public:
 	bool isLoaded();
 	bool isSetup();
 	bool isBuilt();
+	bool isEmpty();
 	bool hasChanged();
 
 	glm::vec4 getCubeColor(int x, int y, int z);

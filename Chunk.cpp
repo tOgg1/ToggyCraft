@@ -1,4 +1,5 @@
 #include "Chunk.h"
+#include <GL\glfw3.h>
 
 Chunk::Chunk(ChunkManager* manager, glm::vec3 pos)
 {
@@ -48,6 +49,7 @@ void Chunk::setup()
 {
 	if(mSetup)
 		return;
+	mSetup = true;
 	// Necessary?
 }
 
@@ -97,6 +99,22 @@ bool Chunk::isBuilt()
 	return mBuilt;
 }
 
+bool Chunk::isEmpty()
+{
+	for(int i = 0; i < CHUNK_SIZE; i++)
+	{
+		for(int j = 0; j < CHUNK_SIZE; j++)
+		{
+			for(int k = 0; k < CHUNK_SIZE; k++)
+			{
+				if(mBlocks[i][k][j].isActive())
+					return false;
+			}
+		}
+	}
+	return true;
+}
+
 bool Chunk::hasChanged()
 {
 	return mChanged;
@@ -122,8 +140,11 @@ void Chunk::render(GLRenderer* pRenderer)
 
 void Chunk::createMesh(GLRenderer* pRenderer)
 {
+	float time1 = glfwGetTime();
+	//if(isEmpty())
+	//	return;
 	pRenderer->startMesh(&meshID);
-	pRenderer->setTranslation(glm::vec3(mPos.x*16, mPos.y*16, mPos.z*16));
+	pRenderer->setTranslation(glm::vec3(mPos.x*CHUNK_SIZE, mPos.y*CHUNK_SIZE, mPos.z*CHUNK_SIZE));
 
 	for(int i = 0; i < CHUNK_SIZE; i++)
 	{
@@ -142,6 +163,9 @@ void Chunk::createMesh(GLRenderer* pRenderer)
 	pRenderer->finishMesh(meshID, this);
 	mBuilt = true;
 	mChanged = false;
+	float time2 = glfwGetTime();
+	float dt = (time2-time1)*1e3;
+	printf("Time to create chunk: %f ms                         \r", dt);
 }
 
 void Chunk::createCube(int x, int y, int z, GLRenderer* pRenderer)
@@ -161,27 +185,28 @@ void Chunk::createCube(int x, int y, int z, GLRenderer* pRenderer)
 	bool renderLeft = x0 == NULL ? true : !x0->isActive();
 	bool renderRight = x1 == NULL ? true : !x1->isActive();
 
-	glm::vec3 p1, p2, p3, p4, p5, p6, p7, p8, n1, n2, n3, n4, n5, n6;	
-
 	float blockSize = Block::BLOCK_SIZE;
 
+	if(!(renderTop || renderBottom || renderFront || renderBack || renderLeft || renderRight))
+		return;
+
 	// Cube points
-	p1 = glm::vec3(2*x*blockSize - blockSize, 2*y*blockSize - blockSize, 2*z*blockSize + blockSize);
-	p2 = glm::vec3(2*x*blockSize + blockSize, 2*y*blockSize - blockSize, 2*z*blockSize + blockSize);
-	p3 = glm::vec3(2*x*blockSize + blockSize, 2*y*blockSize + blockSize, 2*z*blockSize + blockSize);
-	p4 = glm::vec3(2*x*blockSize - blockSize, 2*y*blockSize + blockSize, 2*z*blockSize + blockSize);
-	p5 = glm::vec3(2*x*blockSize + blockSize, 2*y*blockSize - blockSize, 2*z*blockSize - blockSize);
-	p6 = glm::vec3(2*x*blockSize - blockSize, 2*y*blockSize - blockSize, 2*z*blockSize - blockSize);
-	p7 = glm::vec3(2*x*blockSize - blockSize, 2*y*blockSize + blockSize, 2*z*blockSize - blockSize);
-	p8 = glm::vec3(2*x*blockSize + blockSize, 2*y*blockSize + blockSize, 2*z*blockSize - blockSize);
+	glm::vec3 p1 = glm::vec3(2*x*blockSize - blockSize, 2*y*blockSize - blockSize, 2*z*blockSize + blockSize);
+	glm::vec3 p2 = glm::vec3(2*x*blockSize + blockSize, 2*y*blockSize - blockSize, 2*z*blockSize + blockSize);
+	glm::vec3 p3 = glm::vec3(2*x*blockSize + blockSize, 2*y*blockSize + blockSize, 2*z*blockSize + blockSize);
+	glm::vec3 p4 = glm::vec3(2*x*blockSize - blockSize, 2*y*blockSize + blockSize, 2*z*blockSize + blockSize);
+	glm::vec3 p5 = glm::vec3(2*x*blockSize + blockSize, 2*y*blockSize - blockSize, 2*z*blockSize - blockSize);
+	glm::vec3 p6 = glm::vec3(2*x*blockSize - blockSize, 2*y*blockSize - blockSize, 2*z*blockSize - blockSize);
+	glm::vec3 p7 = glm::vec3(2*x*blockSize - blockSize, 2*y*blockSize + blockSize, 2*z*blockSize - blockSize);
+	glm::vec3 p8 = glm::vec3(2*x*blockSize + blockSize, 2*y*blockSize + blockSize, 2*z*blockSize - blockSize);
 
 	// Cube Normals (front, back, right, left, top, bottom)
-	n1 = glm::vec3(0.0f, 0.0f, 1.0f);
-	n2 = glm::vec3(0.0f, 0.0f, -1.0f);
-	n3 = glm::vec3(1.0f, 0.0f, 0.0f);
-	n4 = glm::vec3(-1.0f, 0.0f, 0.0f);
-	n5 = glm::vec3(0.0f, 1.0f, 0.0f);
-	n6 = glm::vec3(0.0f, -1.0f, 0.0f);
+	glm::vec3 n1 = glm::vec3(0.0f, 0.0f, 1.0f);
+	glm::vec3 n2 = glm::vec3(0.0f, 0.0f, -1.0f);
+	glm::vec3 n3 = glm::vec3(1.0f, 0.0f, 0.0f);
+	glm::vec3 n4 = glm::vec3(-1.0f, 0.0f, 0.0f);
+	glm::vec3 n5 = glm::vec3(0.0f, 1.0f, 0.0f);
+	glm::vec3 n6 = glm::vec3(0.0f, -1.0f, 0.0f);
 
 	glm::vec4 color = getCubeColor(x, y, z);
 
@@ -263,6 +288,7 @@ void Chunk::createCube(int x, int y, int z, GLRenderer* pRenderer)
 		pRenderer->addTriangleToMesh(meshID, id6, id5, id2);
 		pRenderer->addTriangleToMesh(meshID, id6, id2, id1);
 	}
+
 }
 
 void Chunk::generateTerrain(TerrainGenerator* generator)
@@ -283,7 +309,7 @@ void Chunk::generateTerrain(TerrainGenerator* generator)
 
 Block* Chunk::getBlock(int x, int y, int z)
 {
-	int size = CHUNK_SIZE;
+	int size = Chunk::CHUNK_SIZE;
 	if(x > size-1 || y > size-1 || z > size-1 || x < 0 || y < 0 || z <0)
 		return mChunkManager->getBlock(x + mPos.x*size, y + mPos.y*size, z + mPos.z*size);
 	return &mBlocks[x][y][z];

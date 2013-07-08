@@ -34,7 +34,7 @@ Camera::Camera(Game* game, GLFWwindow* window)
 	up = glm::cross(dir, right);
 
 	viewMatrix = glm::lookAt(pos, pos+dir, right);
-	projectionMatrix = glm::perspective(float(fov), (float)Game::screenWidth/(float)Game::screenHeight, 0.1f, 100.0f);
+	projectionMatrix = glm::perspective(float(fov), (float)Game::screenWidth/(float)Game::screenHeight, 0.1f, 200.0f);
 }
 
 
@@ -126,5 +126,5 @@ void Camera::move(float dt)
 
 	viewMatrix = glm::lookAt(pos, pos + dir, up);
 
-	printf("Pos: %f %f %f dt: %f\r", pos.x, pos.y, pos.z, dt);
+	//printf("Pos: %f %f %f dt: %f\r", pos.x, pos.y, pos.z, dt);
 }

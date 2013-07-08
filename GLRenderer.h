@@ -44,7 +44,7 @@ public:
 	void startMesh(int* id);
 	void finishMesh(int id, Chunk* chunk);
 
-	int addPointToMesh(int id, glm::vec3 point, glm::vec4 color, glm::vec3 normal);
+	int addPointToMesh(int id, glm::vec3 &point, glm::vec4 &color, glm::vec3 &normal);
 	void addTriangleToMesh(int id, int point1, int point2, int point3);
 	
 	void renderACube();

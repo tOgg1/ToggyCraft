@@ -9,6 +9,7 @@ TerrainChunk::TerrainChunk(ChunkManager* manager)
 {
 	mChunkManager = manager;
 	addCount = 0;
+	chunks.reserve(TERRAIN_MAX_HEIGHT);
 }
 
 

@@ -1,8 +1,8 @@
 #include "ChunkManager.h"
 
 int ChunkManager::CHUNK_LOAD_PER_FRAME = 2;
-int ChunkManager::CHUNK_REBUILD_PER_FRAME = 2;
-int ChunkManager::ACTIVE_CHUNKS_SIZE = 10;
+int ChunkManager::CHUNK_REBUILD_PER_FRAME = 1;
+int ChunkManager::ACTIVE_CHUNKS_SIZE = 3;
 
 ChunkManager::ChunkManager(GLRenderer* renderer)
 {
@@ -122,7 +122,7 @@ void ChunkManager::rebuildChunks()
 		//{
 		chunk->createMesh(pRenderer);
 			
-		glm::vec3 pos = chunk->getPos();
+		/*glm::vec3 pos = chunk->getPos();
 		int x = (int)pos.x;
 		int y = (int)pos.y;
 		int z = (int)pos.z;
@@ -148,12 +148,12 @@ void ChunkManager::rebuildChunks()
 			renderFlagList.push_back(z0);
 		if(z1 != NULL)
 			renderFlagList.push_back(z0);
-				
+				*/
 		++numRebuilt;
 		//}
 	}
-	rebuildList.clear();
-	
+
+	rebuildList.clear();	
 	for(it = chunkList.begin(); it != chunkList.end(); ++it)
 	{
 		Chunk* chunk = (*it);
@@ -253,10 +253,10 @@ Block* ChunkManager::getBlock(int x, int y, int z)
 // Convert block-space coordinates into chunk-space coordinates
 void ChunkManager::getChunkCoordinates(float x, float y, float z, int* sx, int* sy, int* sz)
 {
-	*sx = x > 0 ? (int)x/Chunk::CHUNK_SIZE : (int)x/Chunk::CHUNK_SIZE - 1;	
-	*sy = y > 0 ? (int)y/Chunk::CHUNK_SIZE : (int)y/Chunk::CHUNK_SIZE - 1;	
-	*sz = z > 0 ? (int)z/Chunk::CHUNK_SIZE : (int)z/Chunk::CHUNK_SIZE - 1;	
-}
+	*sx = x == 0 ? 0 : x > 0 ? (int)x/Chunk::CHUNK_SIZE : (int)x/Chunk::CHUNK_SIZE - 1;	
+	*sy = y == 0 ? 0 : y > 0 ? (int)y/Chunk::CHUNK_SIZE : (int)y/Chunk::CHUNK_SIZE - 1;	
+	*sz = z == 0 ? 0 : z > 0 ? (int)z/Chunk::CHUNK_SIZE : (int)z/Chunk::CHUNK_SIZE - 1;	
+} 
 
 TerrainGenerator* ChunkManager::getTerrainGenerator()
 {
