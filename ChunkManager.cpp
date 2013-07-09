@@ -1,8 +1,8 @@
 #include "ChunkManager.h"
 
-int ChunkManager::CHUNK_LOAD_PER_FRAME = 2;
-int ChunkManager::CHUNK_REBUILD_PER_FRAME = 1;
-int ChunkManager::ACTIVE_CHUNKS_SIZE = 3;
+int ChunkManager::CHUNK_LOAD_PER_FRAME = 1;
+int ChunkManager::CHUNK_REBUILD_PER_FRAME = 3;
+int ChunkManager::ACTIVE_CHUNKS_SIZE = 12;
 
 ChunkManager::ChunkManager(GLRenderer* renderer)
 {
@@ -248,6 +248,7 @@ Block* ChunkManager::getBlock(int x, int y, int z)
 		
 		return chunk->getBlock(bx, by, bz);
 	}
+	return NULL;
 }
 
 // Convert block-space coordinates into chunk-space coordinates

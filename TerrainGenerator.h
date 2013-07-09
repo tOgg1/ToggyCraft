@@ -13,7 +13,7 @@ public:
 	void setOctaves(double setOctaves);
 	void setAmplitude(double amplitude);
 
-	static const int GENERATOR_GRID_SIZE = 64;
+	static const int GENERATOR_GRID_SIZE = 128;
 
 private:
 	int seed;

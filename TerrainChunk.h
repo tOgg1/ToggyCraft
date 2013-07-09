@@ -15,7 +15,7 @@ public:
 	~TerrainChunk(void);
 
 	// maximum amount of chunks in height
-	static const int TERRAIN_MAX_HEIGHT = 4;
+	static const int TERRAIN_MAX_HEIGHT = 8;
 
 	bool containsChunk(Chunk* chunk);
 	void setColumn(std::vector<Chunk*> chunks);

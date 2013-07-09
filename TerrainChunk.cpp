@@ -45,7 +45,7 @@ void TerrainChunk::generateTerrain(TerrainGenerator* generator)
 				{
 					Block* block = getBlock(x,y,z);
 					block->setActive(true);
-					block->setBlockType(GRASS);
+					block->setBlockType(y > Chunk::CHUNK_SIZE*TERRAIN_MAX_HEIGHT/3 ? GRASS : DIRT);
 				}
 			}
 		}

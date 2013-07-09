@@ -15,7 +15,7 @@ public:
 	Chunk(ChunkManager* manager, glm::vec3 pos);
 	~Chunk(void);
 
-	static const int CHUNK_SIZE = 64;
+	static const int CHUNK_SIZE = 32;
 
 	void update(float dt);
 	void render(GLRenderer* pRenderer);
@@ -60,6 +60,5 @@ private:
 	glm::vec3 mPos;
 
 	void createCube(int x, int y, int z, GLRenderer* pRenderer);
-	
 };
 

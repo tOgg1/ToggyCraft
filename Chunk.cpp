@@ -1,5 +1,5 @@
 #include "Chunk.h"
-#include <GL\glfw3.h>
+#include <GL/glfw3.h>
 
 Chunk::Chunk(ChunkManager* manager, glm::vec3 pos)
 {
@@ -160,12 +160,13 @@ void Chunk::createMesh(GLRenderer* pRenderer)
 			}
 		}
 	}
-	pRenderer->finishMesh(meshID, this);
 	mBuilt = true;
 	mChanged = false;
 	float time2 = glfwGetTime();
 	float dt = (time2-time1)*1e3;
 	printf("Time to create chunk: %f ms                         \r", dt);
+	pRenderer->finishMesh(meshID, this);
+
 }
 
 void Chunk::createCube(int x, int y, int z, GLRenderer* pRenderer)
@@ -184,6 +185,7 @@ void Chunk::createCube(int x, int y, int z, GLRenderer* pRenderer)
 	bool renderBack = z0 == NULL ? true : !z0->isActive();
 	bool renderLeft = x0 == NULL ? true : !x0->isActive();
 	bool renderRight = x1 == NULL ? true : !x1->isActive();
+	
 
 	float blockSize = Block::BLOCK_SIZE;
 

@@ -28,6 +28,8 @@ private:
 	static float minViewY;
 
 	static int fov;
+	static int closeView;
+	static int farView;
 
 	float viewX;
 	float viewY;

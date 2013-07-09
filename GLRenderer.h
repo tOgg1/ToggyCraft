@@ -51,8 +51,8 @@ public:
 	void renderMesh(int id);
 
 	bool chunkInFrustum(Chunk* chunk);
-	bool pointInFrustum(glm::vec3 pos);
-	bool sphereInFrustum(glm::vec3 center, double radius);
+	bool pointInFrustum(glm::vec3 &pos);
+	bool sphereInFrustum(glm::vec3 &center, double radius);
 
 	void setTranslation(glm::vec3 pos);
 

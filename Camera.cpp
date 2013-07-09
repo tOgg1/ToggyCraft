@@ -114,17 +114,17 @@ void Camera::move(float dt)
 
 	if(glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS)
 	{
-		speed = 10.0f;
+		speed = 30.0f;
 	}
 
 	if(glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS)
 	{
-		speed = 3.0f;
+		speed = 10.0f;
 	}
 
 	up = glm::cross(right, dir);
 
 	viewMatrix = glm::lookAt(pos, pos + dir, up);
 
-	//printf("Pos: %f %f %f dt: %f\r", pos.x, pos.y, pos.z, dt);
+	printf("Pos: %f %f %f dt: %f\r", pos.x, pos.y, pos.z, dt);
 }
