@@ -2,9 +2,11 @@
 
 #include <glm/glm.hpp>
 #include "Game.h"
+#include "Frustum.h"
 
 struct GLFWwindow;
 class Game;
+class Frustum;
 
 class Camera
 {
@@ -23,6 +25,7 @@ private:
 
 	GLFWwindow* window;
 	Game* game;
+	Frustum* frustum;
 
 	static float maxViewY;
 	static float minViewY;

@@ -71,10 +71,13 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Chunk.cpp" />
     <ClCompile Include="ChunkManager.cpp" />
+    <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GLRenderer.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Math.cpp" />
+    <ClCompile Include="Plane3.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="TerrainChunk.cpp" />
     <ClCompile Include="TerrainGenerator.cpp" />
@@ -84,9 +87,12 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Chunk.h" />
     <ClInclude Include="ChunkManager.h" />
+    <ClInclude Include="Frustum.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GLRenderer.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="Math.h" />
+    <ClInclude Include="Plane3.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="TerrainChunk.h" />
     <ClInclude Include="TerrainGenerator.h" />

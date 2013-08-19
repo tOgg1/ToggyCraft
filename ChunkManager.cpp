@@ -17,7 +17,8 @@ ChunkManager::ChunkManager(GLRenderer* renderer)
 	lastCameraDir = glm::vec3(0,0,0);
 
 	low_x = low_z = low_z = 0;
-	
+	chunkList.reserve(1000);
+
 	initializeChunks();
 }
 
@@ -118,8 +119,8 @@ void ChunkManager::rebuildChunks()
 	for(it = rebuildList.begin(); it != rebuildList.end() && numRebuilt != CHUNK_REBUILD_PER_FRAME; ++it)
 	{
 		Chunk* chunk = (*it);
-		//if(chunk->isSetup() && chunk->isLoaded())
-		//{
+		if(chunk->isSetup() && chunk->isLoaded())
+		{
 		chunk->createMesh(pRenderer);
 			
 		/*glm::vec3 pos = chunk->getPos();
@@ -148,9 +149,9 @@ void ChunkManager::rebuildChunks()
 			renderFlagList.push_back(z0);
 		if(z1 != NULL)
 			renderFlagList.push_back(z0);
-				*/
+		*/
 		++numRebuilt;
-		//}
+		}
 	}
 
 	rebuildList.clear();	

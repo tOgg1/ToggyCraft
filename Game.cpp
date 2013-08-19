@@ -61,7 +61,7 @@ void Game::start()
 void Game::run()
 {
 	printf("\nRunning");
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	glClearColor(0.0f, 0.0f, 0.8f, 0.0f);
 
 	double lastTime, curTime;
 	float delta;

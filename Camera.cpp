@@ -12,6 +12,7 @@ Camera::Camera(Game* game, GLFWwindow* window)
 {
 	this->window = window;
 	this->game = game;
+	this->frustum = new Frustum();
 
 	viewX = 3.14f;
 	viewY = 0.0f;
@@ -125,6 +126,6 @@ void Camera::move(float dt)
 	up = glm::cross(right, dir);
 
 	viewMatrix = glm::lookAt(pos, pos + dir, up);
-
+	frustum->setFrustum(this->getProjectionMatrix() * this->getViewMatrix());
 	printf("Pos: %f %f %f dt: %f\r", pos.x, pos.y, pos.z, dt);
 }
