@@ -333,6 +333,8 @@ void GLRenderer::renderMesh(int id)
 
 bool GLRenderer::chunkInFrustum(Chunk* chunk)
 {
+
+	//Edit to deal with encapsulating chunk
 	float hSize = Chunk::CHUNK_SIZE/2;
 	glm::vec3 cPos = chunk->getPos() * (float)2 * hSize;
 	glm::vec3 p1, p2, p3, p4, p5, p6, p7, p8;
@@ -360,13 +362,12 @@ bool GLRenderer::chunkInFrustum(Chunk* chunk)
 
 bool GLRenderer::pointInFrustum(glm::vec3 &pos)
 {
-	return true;
+	return camera->getFrustum()->pointInFrustum(pos);
 }
 
 bool GLRenderer::sphereInFrustum(glm::vec3& center, double radius)
 {
 	return true;
-
 }
 
 void GLRenderer::setTranslation(glm::vec3 pos)

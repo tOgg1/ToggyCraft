@@ -21,6 +21,8 @@ public:
 	glm::vec3& getPos();
 	glm::vec3& getDir();
 
+	Frustum* getFrustum();
+
 private:
 
 	GLFWwindow* window;
